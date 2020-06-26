@@ -4,11 +4,11 @@ import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
 import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
 import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
-import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
 import com.kakaopaycorp.moneydistribution.domain.exception.MoneyCanNotBeMinusException;
 import com.kakaopaycorp.moneydistribution.domain.exception.NotExistAccountAtChatRoomException;
 import com.kakaopaycorp.moneydistribution.domain.exception.NotValidTokenException;
 import com.kakaopaycorp.moneydistribution.domain.exception.PieceNumCanNotLessThanOneException;
+import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
@@ -80,10 +80,7 @@ public class MoneyDistributionService {
             throw new NotExistAccountAtChatRoomException(account, chatRoom);
 
         MoneyDistribution md = this.getMoneyDistribution(token, chatRoom);
-
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account);
-
-        return  moneyPiece;
+        return md.pickUnusedPiece(account);
     }
 
     private MoneyDistribution getMoneyDistribution(String token, ChatRoom chatRoom) {

@@ -10,4 +10,5 @@ import java.util.List;
 public interface MoneyDistributionRepository extends JpaRepository<MoneyDistribution, Long> {
 
     List<MoneyDistribution> findAllByCreatedAtAfterAndChatRoomIs(LocalDateTime ldt, ChatRoom chatroom);
+
 }

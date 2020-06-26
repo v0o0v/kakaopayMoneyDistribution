@@ -1,6 +1,7 @@
 package com.kakaopaycorp.moneydistribution.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kakaopaycorp.moneydistribution.domain.exception.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 @Getter
 @Setter
@@ -59,7 +63,7 @@ public class MoneyDistribution {
         List<Integer> moneyList = new ArrayList<>();
 
         Random random = new Random(System.currentTimeMillis());
-        for (int i = 0; i < pieceNum-1 ; i++) {
+        for (int i = 0; i < pieceNum - 1; i++) {
             int money = random.nextInt(totalMoney + 1);
             moneyList.add(money);
             totalMoney -= money;
@@ -71,16 +75,47 @@ public class MoneyDistribution {
     }
 
     public MoneyPiece pickUnusedPiece(Account account) {
+
+        validateToPick(account);
+
+        MoneyPiece moneyPiece = this.getMoneyPieces().stream()
+                .filter(piece -> !piece.isHasPicked())
+                .findFirst().orElseThrow(EntityNotFoundException::new);
+
+        moneyPiece.setHasPicked(true);
+        moneyPiece.setPicker(account);
+        moneyPiece.setDistributeAt(LocalDateTime.now());
+
+        return moneyPiece;
+    }
+
+    private void validateToPick(Account account) {
         //10분 안넘었는지
+        if (this.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(10)))
+            throw new ValidTimeOverException();
 
         //account가 chatroom에 있는지
+        if (!this.getChatRoom().containsAccount(account))
+            throw new NotExistAccountAtChatRoomException(account, this.getChatRoom());
 
         //account가 이미 받았는지
+        if (this.getMoneyPieces().stream()
+                .anyMatch(moneyPiece ->
+                    moneyPiece.getPicker() != null
+                    && moneyPiece.getPicker().equals(account)
+                ))
+            throw new AccountAlreadyPickedException();
 
         //남은 piece 없음
+        if (this.getMoneyPieces().stream()
+                .filter(moneyPiece -> !moneyPiece.isHasPicked())
+                .count() <= 0)
+            throw new UnusedPieceNoneExistException();
 
         //뿌린 사람이랑 account랑 같은지
-
-        return null;
+        if (this.getDistributor().equals(account))
+            throw new DistributorCanNotPickException();
     }
+
+
 }
