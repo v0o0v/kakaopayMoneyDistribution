@@ -12,6 +12,8 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 public class MoneyDistributionService {
@@ -46,14 +48,26 @@ public class MoneyDistributionService {
             throw new PieceNumCanNotLessThanOneException();
 
         return this.moneyDistributionRepository.save(
-                new MoneyDistribution(chatRoom, distributor, money, pieceNum, makeToken()));
+                new MoneyDistribution(chatRoom, distributor, money, pieceNum, makeToken(RandomString.make(3))));
     }
 
-    // 최근 7일 안에 있는 같은방 뿌리기에서 토큰 중복 확인.
-    // 7일이 넘은 뿌리기는 이미 의미가 없기 때문에 중복 검사 안함.
-    // 토큰으로 뿌리기 조회시에도 7일안에서만 조회.
-    private String makeToken() {
-        return RandomString.make(3);
+
+    @Transactional
+    public String makeToken(String token) {
+        if (this.isExistTokenInAWeek(token))
+            return makeToken(RandomString.make(3));
+
+        return token;
     }
+
+
+    @Transactional
+    public boolean isExistTokenInAWeek(String token) {
+        return this.moneyDistributionRepository.findAllByCreatedAtAfter(LocalDateTime.now().minusDays(7))
+                .stream()
+                .filter(moneyDistribution -> moneyDistribution.getToken().equals(token))
+                .count() >= 1;
+    }
+
 
 }
