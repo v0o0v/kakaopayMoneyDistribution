@@ -1,5 +1,6 @@
-package com.kakaopaycorp.moneydistribution.service.exception;
+package com.kakaopaycorp.moneydistribution.service;
 
+import com.kakaopaycorp.moneydistribution.service.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
