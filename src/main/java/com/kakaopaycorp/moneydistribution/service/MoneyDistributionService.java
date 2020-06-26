@@ -3,9 +3,11 @@ package com.kakaopaycorp.moneydistribution.service;
 import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
 import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
+import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
 import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
 import com.kakaopaycorp.moneydistribution.service.exception.MoneyCanNotBeMinusException;
 import com.kakaopaycorp.moneydistribution.service.exception.NotExistAccountAtChatRoomException;
+import com.kakaopaycorp.moneydistribution.service.exception.NotValidTokenException;
 import com.kakaopaycorp.moneydistribution.service.exception.PieceNumCanNotLessThanOneException;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
@@ -48,26 +50,49 @@ public class MoneyDistributionService {
             throw new PieceNumCanNotLessThanOneException();
 
         return this.moneyDistributionRepository.save(
-                new MoneyDistribution(chatRoom, distributor, money, pieceNum, makeToken(RandomString.make(3))));
+                new MoneyDistribution(
+                        chatRoom, distributor, money, pieceNum, makeToken(RandomString.make(3),chatRoom)));
     }
 
 
     @Transactional
-    public String makeToken(String token) {
-        if (this.isExistTokenInAWeek(token))
-            return makeToken(RandomString.make(3));
+    public String makeToken(String token, ChatRoom chatRoom) {
+        if (this.isExistTokenInAWeek(token, chatRoom))
+            return makeToken(RandomString.make(3), chatRoom);
 
         return token;
     }
 
 
     @Transactional
-    public boolean isExistTokenInAWeek(String token) {
-        return this.moneyDistributionRepository.findAllByCreatedAtAfter(LocalDateTime.now().minusDays(7))
+    public boolean isExistTokenInAWeek(String token, ChatRoom chatRoom) {
+        return this.moneyDistributionRepository
+                .findAllByCreatedAtAfterAndChatRoomIs(LocalDateTime.now().minusDays(7), chatRoom)
                 .stream()
                 .filter(moneyDistribution -> moneyDistribution.getToken().equals(token))
                 .count() >= 1;
     }
 
 
+    public MoneyPiece pickMoneyPiece(Long accountID, String chatRoomID, String token) {
+        ChatRoom chatRoom = this.chatRoomService.getChatRoom(chatRoomID);
+        Account distributor = this.accountService.getAccount(accountID);
+
+        if (!chatRoom.containsAccount(distributor))
+            throw new NotExistAccountAtChatRoomException(distributor, chatRoom);
+
+        MoneyDistribution md = this.getMoneyDistrivution(token, chatRoom);
+
+//        return md.pickUnusedPiece(chatRoomID, )
+        return null;
+    }
+
+    private MoneyDistribution getMoneyDistrivution(String token, ChatRoom chatRoom) {
+        return this.moneyDistributionRepository
+                .findAllByCreatedAtAfterAndChatRoomIs(LocalDateTime.now().minusDays(7), chatRoom)
+                    .stream()
+                    .filter(moneyDistribution -> moneyDistribution.getToken().equals(token))
+                    .findFirst()
+                    .orElseThrow(NotValidTokenException::new);
+    }
 }

@@ -5,6 +5,7 @@ import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
 import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
 import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
+import com.kakaopaycorp.moneydistribution.domain.repository.ChatRoomRepository;
 import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
 import com.kakaopaycorp.moneydistribution.service.exception.MoneyCanNotBeMinusException;
 import com.kakaopaycorp.moneydistribution.service.exception.NotExistAccountAtChatRoomException;
@@ -31,6 +32,9 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
 
     @Autowired
     private MoneyDistributionRepository moneyDistributionRepository;
+
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
 
     @Test
     public void addMoneyDistribution() {
@@ -114,28 +118,35 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
 
     @Test
     public void isExistTokenInAWeek() {
+        ChatRoom chatRoom = this.chatRoomRepository.save(new ChatRoom());
+
         MoneyDistribution md = new MoneyDistribution();
         md.setCreatedAt(LocalDateTime.now());
         md.setToken("aaa");
+        md.setChatRoom(chatRoom);
         this.moneyDistributionRepository.save(md);
 
         MoneyDistribution md2 = new MoneyDistribution();
         md2.setCreatedAt(LocalDateTime.now().minusDays(8));
         md2.setToken("bbb");
+        md2.setChatRoom(chatRoom);
         this.moneyDistributionRepository.save(md2);
 
-        assertThat(this.moneyDistributionService.isExistTokenInAWeek("aaa")).isTrue();
-        assertThat(this.moneyDistributionService.isExistTokenInAWeek("aab")).isFalse();
-        assertThat(this.moneyDistributionService.isExistTokenInAWeek("bbb")).isFalse();
+        assertThat(this.moneyDistributionService.isExistTokenInAWeek("aaa", chatRoom)).isTrue();
+        assertThat(this.moneyDistributionService.isExistTokenInAWeek("aab", chatRoom)).isFalse();
+        assertThat(this.moneyDistributionService.isExistTokenInAWeek("bbb", chatRoom)).isFalse();
     }
 
     @Test
     public void makeToken() {
+        ChatRoom chatRoom = this.chatRoomRepository.save(new ChatRoom());
+
         MoneyDistribution md = new MoneyDistribution();
         md.setCreatedAt(LocalDateTime.now());
         md.setToken("aaa");
+        md.setChatRoom(chatRoom);
         this.moneyDistributionRepository.save(md);
 
-        assertThat(this.moneyDistributionService.makeToken("aaa")).isNotEqualTo("aaa");
+        assertThat(this.moneyDistributionService.makeToken("aaa", chatRoom)).isNotEqualTo("aaa");
     }
 }
