@@ -1,11 +1,16 @@
 package com.kakaopaycorp.moneydistribution.controller;
 
+import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
+import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MoneyDistributionControllerDTO {
 
@@ -41,7 +46,7 @@ public class MoneyDistributionControllerDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public class PickRequestDTO {
+    public static class PickRequestDTO {
 
         @NotEmpty(message = "Token 값이 비어있습니다.")
         private String token;
@@ -62,4 +67,45 @@ public class MoneyDistributionControllerDTO {
             this.pickedMoneyValue = pickedMoneyValue;
         }
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class SearchResponseDTO {
+
+        private LocalDateTime distributedAt;
+
+        private Integer distributedTotalMoneyValue;
+
+        private Integer pickedMoneyValue;
+
+        private List<MoneyPieceDTO> pickedMoneyPieces;
+
+        public SearchResponseDTO(MoneyDistribution md) {
+            this.distributedAt = md.getCreatedAt();
+            this.distributedTotalMoneyValue = md.getTotalDistributedMoneyValue();
+            this.pickedMoneyValue = md.getPickedMoneySum();
+            this.pickedMoneyPieces = md.getUsedPieces()
+                    .stream()
+                    .map(MoneyPieceDTO::new)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class MoneyPieceDTO {
+
+        private Integer pickedMoneyValue;
+
+        private Long pickerID;
+
+        public MoneyPieceDTO(MoneyPiece mp) {
+            this.pickedMoneyValue = mp.getMoneyValue();
+            this.pickerID = mp.getPicker().getId();
+        }
+    }
+
+
 }

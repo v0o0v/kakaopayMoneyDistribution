@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 @Slf4j
 @Controller
@@ -53,6 +54,23 @@ public class MoneyDistributionController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new MoneyDistributionControllerDTO.PickResponseDTO(moneyPiece.getMoneyValue()));
+
+    }
+
+    @GetMapping("/{token}")
+    public ResponseEntity<?> searchMoneyDistribution(
+            @RequestHeader("X-USER-ID") Long accountID
+            , @RequestHeader("X-ROOM-ID") String chatRoomID
+            , @PathVariable String token
+    ) {
+
+        MoneyDistribution md = this.moneyDistributionService
+                .searchMoneyDistribution(accountID, chatRoomID, token);
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new MoneyDistributionControllerDTO.SearchResponseDTO(md));
 
     }
 }
