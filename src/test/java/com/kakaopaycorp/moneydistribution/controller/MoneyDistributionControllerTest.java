@@ -30,8 +30,8 @@ public class MoneyDistributionControllerTest extends ControllerTest {
     public void createMoneyDistribution() throws Exception {
 
         //given
-        MoneyDistributionControllerDTO.MoneyDistributionCreateDTO dto
-                = new MoneyDistributionControllerDTO.MoneyDistributionCreateDTO(100, 3);
+        MoneyDistributionControllerDTO.CreateRequestDTO dto
+                = new MoneyDistributionControllerDTO.CreateRequestDTO(100, 3);
 
         MoneyDistribution md = makeMoneyDistribution(1L);
         given(this.moneyDistributionService.addMoneyDistribution(anyLong(), any(), anyInt(), anyInt())).willReturn(md);
@@ -48,10 +48,7 @@ public class MoneyDistributionControllerTest extends ControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id").value(md.getId()))
                 .andExpect(jsonPath("$.token").isNotEmpty())
-                .andExpect(jsonPath("$.chatRoom").isNotEmpty())
-                .andExpect(jsonPath("$.distributor").isNotEmpty())
         ;
     }
 
@@ -67,11 +64,63 @@ public class MoneyDistributionControllerTest extends ControllerTest {
         distributor.setId(2L);
         md.setDistributor(distributor);
         md.setToken("abc");
-        MoneyPiece mp1 = new MoneyPiece(md,33);
+        MoneyPiece mp1 = new MoneyPiece(md, 33);
         MoneyPiece mp2 = new MoneyPiece(md, 33);
         MoneyPiece mp3 = new MoneyPiece(md, 34);
         md.setMoneyPieces(Arrays.asList(mp1, mp2, mp3));
 
         return md;
+    }
+
+    @Test
+    public void createMoneyDistribution_머니가0보다작을때() throws Exception {
+
+        //given
+        MoneyDistributionControllerDTO.CreateRequestDTO dto
+                = new MoneyDistributionControllerDTO.CreateRequestDTO(-1, 3);
+
+        MoneyDistribution md = makeMoneyDistribution(1L);
+        given(this.moneyDistributionService.addMoneyDistribution(anyLong(), any(), anyInt(), anyInt())).willReturn(md);
+
+        //when
+        ResultActions result = mockMvc.perform(post("/moneyDistribution")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-USER-ID", 1L)
+                .header("X-ROOM-ID", 2L)
+                .content(objectMapper.writeValueAsString(dto)));
+
+        //then
+        result
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.errorMessage").value("뿌리기 지정 액수는 0보디 작을 수 없습니다."))
+        ;
+    }
+
+    @Test
+    public void createMoneyDistribution_지정인원이1보다작을때() throws Exception {
+
+        //given
+        MoneyDistributionControllerDTO.CreateRequestDTO dto
+                = new MoneyDistributionControllerDTO.CreateRequestDTO(100, 0);
+
+        MoneyDistribution md = makeMoneyDistribution(1L);
+        given(this.moneyDistributionService.addMoneyDistribution(anyLong(), any(), anyInt(), anyInt())).willReturn(md);
+
+        //when
+        ResultActions result = mockMvc.perform(post("/moneyDistribution")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-USER-ID", 1L)
+                .header("X-ROOM-ID", 2L)
+                .content(objectMapper.writeValueAsString(dto)));
+
+        //then
+        result
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.errorMessage").value("뿌리기 지정 대상 인원은 1보다 작을 수 없습니다."))
+        ;
     }
 }
