@@ -3,7 +3,7 @@ package com.kakaopaycorp.moneydistribution.service;
 import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
 import com.kakaopaycorp.moneydistribution.domain.repository.ChatRoomRepository;
-import com.kakaopaycorp.moneydistribution.service.exception.ChatRoomEntityNotFoundException;
+import com.kakaopaycorp.moneydistribution.domain.exception.ChatRoomEntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

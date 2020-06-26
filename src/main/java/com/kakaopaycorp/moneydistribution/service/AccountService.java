@@ -2,7 +2,7 @@ package com.kakaopaycorp.moneydistribution.service;
 
 import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.repository.AccountRepository;
-import com.kakaopaycorp.moneydistribution.service.exception.AccountEntityNotFoundException;
+import com.kakaopaycorp.moneydistribution.domain.exception.AccountEntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

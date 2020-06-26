@@ -7,9 +7,9 @@ import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
 import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
 import com.kakaopaycorp.moneydistribution.domain.repository.ChatRoomRepository;
 import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
-import com.kakaopaycorp.moneydistribution.service.exception.MoneyCanNotBeMinusException;
-import com.kakaopaycorp.moneydistribution.service.exception.NotExistAccountAtChatRoomException;
-import com.kakaopaycorp.moneydistribution.service.exception.PieceNumCanNotLessThanOneException;
+import com.kakaopaycorp.moneydistribution.domain.exception.MoneyCanNotBeMinusException;
+import com.kakaopaycorp.moneydistribution.domain.exception.NotExistAccountAtChatRoomException;
+import com.kakaopaycorp.moneydistribution.domain.exception.PieceNumCanNotLessThanOneException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

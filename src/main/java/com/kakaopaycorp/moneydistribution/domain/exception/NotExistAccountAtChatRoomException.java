@@ -1,4 +1,4 @@
-package com.kakaopaycorp.moneydistribution.service.exception;
+package com.kakaopaycorp.moneydistribution.domain.exception;
 
 import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.ChatRoom;

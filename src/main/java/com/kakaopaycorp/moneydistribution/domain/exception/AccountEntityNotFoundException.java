@@ -1,4 +1,4 @@
-package com.kakaopaycorp.moneydistribution.service.exception;
+package com.kakaopaycorp.moneydistribution.domain.exception;
 
 public class AccountEntityNotFoundException extends RuntimeException {
     public AccountEntityNotFoundException() {

@@ -69,4 +69,18 @@ public class MoneyDistribution {
         Collections.shuffle(moneyList);
         return moneyList;
     }
+
+    public MoneyPiece pickUnusedPiece(Account account) {
+        //10분 안넘었는지
+
+        //account가 chatroom에 있는지
+
+        //account가 이미 받았는지
+
+        //남은 piece 없음
+
+        //뿌린 사람이랑 account랑 같은지
+
+        return null;
+    }
 }

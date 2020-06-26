@@ -6,7 +6,7 @@ import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
 import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
 import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
 import com.kakaopaycorp.moneydistribution.service.MoneyDistributionService;
-import com.kakaopaycorp.moneydistribution.service.exception.NotExistAccountAtChatRoomException;
+import com.kakaopaycorp.moneydistribution.domain.exception.NotExistAccountAtChatRoomException;
 import org.junit.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

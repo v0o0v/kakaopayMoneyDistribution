@@ -1,4 +1,4 @@
-package com.kakaopaycorp.moneydistribution.service.exception;
+package com.kakaopaycorp.moneydistribution.domain.exception;
 
 public class ChatRoomEntityNotFoundException extends RuntimeException {
     public ChatRoomEntityNotFoundException() {

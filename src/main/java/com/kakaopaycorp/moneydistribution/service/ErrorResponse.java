@@ -1,4 +1,4 @@
-package com.kakaopaycorp.moneydistribution.service.exception;
+package com.kakaopaycorp.moneydistribution.service;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
