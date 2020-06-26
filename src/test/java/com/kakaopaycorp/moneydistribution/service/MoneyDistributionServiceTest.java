@@ -148,7 +148,7 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
         MoneyDistribution md = this.moneyDistributionService
                 .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
 
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account2);
+        MoneyPiece moneyPiece = md.pickPiece(account2);
         assertThat(moneyPiece.getPicker()).isEqualTo(account2);
         assertThat(moneyPiece.isHasPicked()).isTrue();
         assertThat(md.getMoneyPieces()
@@ -170,7 +170,7 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
         MoneyDistribution md = this.moneyDistributionService
                 .addMoneyDistribution(account3.getId(), chatRoom.getId(), money, pieceNum);
 
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account2);
+        MoneyPiece moneyPiece = md.pickPiece(account2);
         assertThat(moneyPiece.getPicker()).isEqualTo(account2);
         assertThat(moneyPiece.isHasPicked()).isTrue();
         assertThat(md.getMoneyPieces()
@@ -191,10 +191,10 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
         int pieceNum = 3;
         MoneyDistribution md = this.moneyDistributionService
                 .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
-        md.setCreatedAt(LocalDateTime.now().minusMinutes(10));
+        md.setCreatedAt(LocalDateTime.now().minusMinutes(11));
         this.moneyDistributionRepository.save(md);
 
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account2);
+        MoneyPiece moneyPiece = md.pickPiece(account2);
         assertThat(moneyPiece.getPicker()).isEqualTo(account2);
         assertThat(moneyPiece.isHasPicked()).isTrue();
         assertThat(md.getMoneyPieces()
@@ -216,8 +216,8 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
         MoneyDistribution md = this.moneyDistributionService
                 .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
 
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account2);
-        moneyPiece = md.pickUnusedPiece(account2);
+        MoneyPiece moneyPiece = md.pickPiece(account2);
+        moneyPiece = md.pickPiece(account2);
 
         assertThat(moneyPiece.getPicker()).isEqualTo(account2);
         assertThat(moneyPiece.isHasPicked()).isTrue();
@@ -240,8 +240,8 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
         MoneyDistribution md = this.moneyDistributionService
                 .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
 
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account2);
-        moneyPiece = md.pickUnusedPiece(account3);
+        MoneyPiece moneyPiece = md.pickPiece(account2);
+        moneyPiece = md.pickPiece(account3);
 
 
         assertThat(moneyPiece.getPicker()).isEqualTo(account2);
@@ -265,7 +265,7 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
         MoneyDistribution md = this.moneyDistributionService
                 .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
 
-        MoneyPiece moneyPiece = md.pickUnusedPiece(account1);
+        MoneyPiece moneyPiece = md.pickPiece(account1);
 
         assertThat(moneyPiece.getPicker()).isEqualTo(account2);
         assertThat(moneyPiece.isHasPicked()).isTrue();
@@ -274,5 +274,77 @@ public class MoneyDistributionServiceTest extends IntegrationTest {
                 .filter(moneyPiece1 -> !moneyPiece1.isHasPicked())
                 .count())
                 .isEqualTo(2);
+    }
+
+    @Test
+    public void searchMoneyDistribution() {
+        Account account1 = this.accountService.addAccount();
+        Account account2 = this.accountService.addAccount();
+        Account account3 = this.accountService.addAccount();
+        ChatRoom chatRoom = this.chatRoomService.makeChatRoom(new HashSet<>(Arrays.asList(account1, account2, account3)));
+
+        int money = 100;
+        int pieceNum = 3;
+        MoneyDistribution md = this.moneyDistributionService
+                .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
+
+        MoneyDistribution serarchMD = this.moneyDistributionService
+                .searchMoneyDistribution(account1.getId(), md.getChatRoom().getId(), md.getToken());
+
+        assertThat(md).isEqualTo(serarchMD);
+    }
+
+    @Test(expected = NotValidTokenException.class)
+    public void searchMoneyDistribution_잘못된토큰으로검색() {
+        Account account1 = this.accountService.addAccount();
+        Account account2 = this.accountService.addAccount();
+        Account account3 = this.accountService.addAccount();
+        ChatRoom chatRoom = this.chatRoomService.makeChatRoom(new HashSet<>(Arrays.asList(account1, account2, account3)));
+
+        int money = 100;
+        int pieceNum = 3;
+        MoneyDistribution md = this.moneyDistributionService
+                .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
+
+        MoneyDistribution serarchMD = this.moneyDistributionService
+                .searchMoneyDistribution(account1.getId(), md.getChatRoom().getId(), "111");
+
+        assertThat(md).isEqualTo(serarchMD);
+    }
+
+    @Test(expected = ChatRoomEntityNotFoundException.class)
+    public void searchMoneyDistribution_다른채팅룸으로검색시() {
+        Account account1 = this.accountService.addAccount();
+        Account account2 = this.accountService.addAccount();
+        Account account3 = this.accountService.addAccount();
+        ChatRoom chatRoom = this.chatRoomService.makeChatRoom(new HashSet<>(Arrays.asList(account1, account2, account3)));
+
+        int money = 100;
+        int pieceNum = 3;
+        MoneyDistribution md = this.moneyDistributionService
+                .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
+
+        MoneyDistribution serarchMD = this.moneyDistributionService
+                .searchMoneyDistribution(account1.getId(), "sdfafd", md.getToken());
+
+        assertThat(md).isEqualTo(serarchMD);
+    }
+
+    @Test(expected = MoneyDistributeAccessValidationException.class)
+    public void searchMoneyDistribution_뿌리기당사자가아닌account로검색시() {
+        Account account1 = this.accountService.addAccount();
+        Account account2 = this.accountService.addAccount();
+        Account account3 = this.accountService.addAccount();
+        ChatRoom chatRoom = this.chatRoomService.makeChatRoom(new HashSet<>(Arrays.asList(account1, account2, account3)));
+
+        int money = 100;
+        int pieceNum = 3;
+        MoneyDistribution md = this.moneyDistributionService
+                .addMoneyDistribution(account1.getId(), chatRoom.getId(), money, pieceNum);
+
+        MoneyDistribution serarchMD = this.moneyDistributionService
+                .searchMoneyDistribution(account2.getId(), chatRoom.getId(), md.getToken());
+
+        assertThat(md).isEqualTo(serarchMD);
     }
 }

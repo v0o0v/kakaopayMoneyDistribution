@@ -4,10 +4,7 @@ import com.kakaopaycorp.moneydistribution.domain.Account;
 import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
 import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
 import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
-import com.kakaopaycorp.moneydistribution.domain.exception.MoneyCanNotBeMinusException;
-import com.kakaopaycorp.moneydistribution.domain.exception.NotExistAccountAtChatRoomException;
-import com.kakaopaycorp.moneydistribution.domain.exception.NotValidTokenException;
-import com.kakaopaycorp.moneydistribution.domain.exception.PieceNumCanNotLessThanOneException;
+import com.kakaopaycorp.moneydistribution.domain.exception.*;
 import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
@@ -62,7 +59,7 @@ public class MoneyDistributionService {
         return token;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean isExistTokenInAWeek(String token, ChatRoom chatRoom) {
         return this.moneyDistributionRepository
                 .findAllByCreatedAtAfterAndChatRoomIs(LocalDateTime.now().minusDays(7), chatRoom)
@@ -80,7 +77,7 @@ public class MoneyDistributionService {
             throw new NotExistAccountAtChatRoomException(account, chatRoom);
 
         MoneyDistribution md = this.getMoneyDistribution(token, chatRoom);
-        return md.pickUnusedPiece(account);
+        return md.pickPiece(account);
     }
 
     private MoneyDistribution getMoneyDistribution(String token, ChatRoom chatRoom) {
@@ -90,5 +87,20 @@ public class MoneyDistributionService {
                 .filter(moneyDistribution -> moneyDistribution.getToken().equals(token))
                 .findFirst()
                 .orElseThrow(NotValidTokenException::new);
+    }
+
+    @Transactional(readOnly = true)
+    public MoneyDistribution searchMoneyDistribution(Long accountID, String chatRoomID, String token) {
+        ChatRoom chatRoom = this.chatRoomService.getChatRoom(chatRoomID);
+        Account account = this.accountService.getAccount(accountID);
+
+        //md가 없다면 NotValidToken exception 발생
+        MoneyDistribution md = this.getMoneyDistribution(token, chatRoom);
+
+        //md의 distributor가 account가 아닐때 에러
+        if(!md.getDistributor().equals(account))
+            throw new MoneyDistributeAccessValidationException();
+
+        return md;
     }
 }
