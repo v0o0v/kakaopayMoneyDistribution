@@ -1,0 +1,45 @@
+﻿= 카카오페이 뿌리기 HTTP API
+:toc: left
+:toc-title: Contents
+:toclevels: 2
+:sectnums:
+:sectlinks:
+
+
+== 뿌리기
+
+
+=== 뿌리기 API
+
+==== Request
+include::{snippets}/create-money-distribution/http-request.adoc[leveloffset=+3]
+
+==== Curl Request
+include::{snippets}/create-money-distribution/curl-request.adoc[leveloffset=+3]
+
+==== Response
+include::{snippets}/create-money-distribution/http-response.adoc[leveloffset=+3]
+
+
+=== 받기 API
+
+==== Request
+include::{snippets}/pick-money-distribution/http-request.adoc[leveloffset=+3]
+
+==== Curl Request
+include::{snippets}/pick-money-distribution/curl-request.adoc[leveloffset=+3]
+
+==== Response
+include::{snippets}/pick-money-distribution/http-response.adoc[leveloffset=+3]
+
+
+=== 조회 API
+
+==== Request
+include::{snippets}/search-money-distribution/http-request.adoc[leveloffset=+3]
+
+==== Curl Request
+include::{snippets}/search-money-distribution/curl-request.adoc[leveloffset=+3]
+
+==== Response
+include::{snippets}/search-money-distribution/http-response.adoc[leveloffset=+3]
