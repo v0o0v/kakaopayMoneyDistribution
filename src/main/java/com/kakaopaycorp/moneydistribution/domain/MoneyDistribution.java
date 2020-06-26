@@ -36,7 +36,7 @@ public class MoneyDistribution {
     @JoinColumn
     private Account distributor;
 
-    @OneToMany(mappedBy = "moneyDistribution")
+    @OneToMany(mappedBy = "moneyDistribution", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<MoneyPiece> moneyPieces;
 
