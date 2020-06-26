@@ -1,0 +1,233 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MoneyDistribution</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.kakaopaycorp.moneydistribution.domain</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MoneyDistribution (com.kakaopaycorp.moneydistribution.domain)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MoneyDistribution</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.4%
+  </span>
+  <span class="absValue">
+    (61/ 62)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MoneyDistribution$HibernateProxy$DuFXxwgw</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistribution$HibernateProxy$S5jlYhXu</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.4%
+  </span>
+  <span class="absValue">
+    (61/ 62)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.kakaopaycorp.moneydistribution.domain;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.fasterxml.jackson.annotation.JsonManagedReference;
+<i>4</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.exception.*;
+<i>5</i>&nbsp;import lombok.EqualsAndHashCode;
+<i>6</i>&nbsp;import lombok.Getter;
+<i>7</i>&nbsp;import lombok.NoArgsConstructor;
+<i>8</i>&nbsp;import lombok.Setter;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import javax.persistence.*;
+<i>11</i>&nbsp;import java.time.LocalDateTime;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.Collections;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;import java.util.Random;
+<i>16</i>&nbsp;import java.util.stream.Collectors;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;@Getter
+<b class="fc"><i>19</i>&nbsp;@Setter</b>
+<b class="fc"><i>20</i>&nbsp;@EqualsAndHashCode(of = &quot;id&quot;)</b>
+<b class="fc"><i>21</i>&nbsp;@NoArgsConstructor</b>
+<i>22</i>&nbsp;@Entity
+<i>23</i>&nbsp;public class MoneyDistribution {
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Id
+<i>26</i>&nbsp;    @GeneratedValue
+<b class="fc"><i>27</i>&nbsp;    private Long id;</b>
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    private String token;</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @ManyToOne
+<i>32</i>&nbsp;    @JoinColumn
+<b class="fc"><i>33</i>&nbsp;    private ChatRoom chatRoom;</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    @ManyToOne
+<i>36</i>&nbsp;    @JoinColumn
+<b class="fc"><i>37</i>&nbsp;    private Account distributor;</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    @OneToMany(mappedBy = &quot;moneyDistribution&quot;, cascade = CascadeType.ALL)
+<i>40</i>&nbsp;    @JsonManagedReference
+<b class="fc"><i>41</i>&nbsp;    private List&lt;MoneyPiece&gt; moneyPieces;</b>
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;    private LocalDateTime createdAt;</b>
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;    private Integer totalDistributedMoneyValue;</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;
+<b class="fc"><i>48</i>&nbsp;    public MoneyDistribution(ChatRoom chatRoom, Account account, int money, int pieceNum, String token) {</b>
+<b class="fc"><i>49</i>&nbsp;        this.chatRoom = chatRoom;</b>
+<b class="fc"><i>50</i>&nbsp;        this.distributor = account;</b>
+<b class="fc"><i>51</i>&nbsp;        this.moneyPieces = this.makeMoneyPiece(money, pieceNum);</b>
+<b class="fc"><i>52</i>&nbsp;        this.token = token;</b>
+<b class="fc"><i>53</i>&nbsp;        this.createdAt = LocalDateTime.now();</b>
+<b class="fc"><i>54</i>&nbsp;        this.totalDistributedMoneyValue = money;</b>
+<b class="fc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    private List&lt;MoneyPiece&gt; makeMoneyPiece(int totalMoney, int pieceNum) {
+<b class="fc"><i>58</i>&nbsp;        List&lt;MoneyPiece&gt; pieceSet = new ArrayList&lt;&gt;();</b>
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;        this.makeRandomMoneyList(totalMoney, pieceNum)</b>
+<b class="fc"><i>61</i>&nbsp;                .forEach(money -&gt; pieceSet.add(new MoneyPiece(this, money)));</b>
+<i>62</i>&nbsp;
+<b class="fc"><i>63</i>&nbsp;        return pieceSet;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    private List&lt;Integer&gt; makeRandomMoneyList(int totalMoney, int pieceNum) {
+<b class="fc"><i>67</i>&nbsp;        List&lt;Integer&gt; moneyList = new ArrayList&lt;&gt;();</b>
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;        Random random = new Random(System.currentTimeMillis());</b>
+<b class="fc"><i>70</i>&nbsp;        for (int i = 0; i &lt; pieceNum - 1; i++) {</b>
+<b class="fc"><i>71</i>&nbsp;            int money = random.nextInt(totalMoney + 1);</b>
+<b class="fc"><i>72</i>&nbsp;            moneyList.add(money);</b>
+<b class="fc"><i>73</i>&nbsp;            totalMoney -= money;</b>
+<i>74</i>&nbsp;        }
+<b class="fc"><i>75</i>&nbsp;        moneyList.add(totalMoney);</b>
+<i>76</i>&nbsp;
+<b class="fc"><i>77</i>&nbsp;        Collections.shuffle(moneyList);</b>
+<b class="fc"><i>78</i>&nbsp;        return moneyList;</b>
+<i>79</i>&nbsp;    }
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    public MoneyPiece pickPiece(Account account) {
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;        validateToPick(account);</b>
+<i>84</i>&nbsp;
+<b class="fc"><i>85</i>&nbsp;        MoneyPiece moneyPiece = this.getMoneyPieces().stream()</b>
+<b class="fc"><i>86</i>&nbsp;                .filter(piece -&gt; !piece.isHasPicked())</b>
+<b class="fc"><i>87</i>&nbsp;                .findFirst().orElseThrow(EntityNotFoundException::new);</b>
+<i>88</i>&nbsp;
+<b class="fc"><i>89</i>&nbsp;        moneyPiece.setHasPicked(true);</b>
+<b class="fc"><i>90</i>&nbsp;        moneyPiece.setPicker(account);</b>
+<b class="fc"><i>91</i>&nbsp;        moneyPiece.setDistributeAt(LocalDateTime.now());</b>
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;        return moneyPiece;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    private void validateToPick(Account account) {
+<i>97</i>&nbsp;        //10분 안넘었는지
+<b class="fc"><i>98</i>&nbsp;        if (this.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(10)))</b>
+<b class="fc"><i>99</i>&nbsp;            throw new ValidTimeOverException();</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;        //account가 chatroom에 있는지
+<b class="fc"><i>102</i>&nbsp;        if (!this.getChatRoom().containsAccount(account))</b>
+<b class="nc"><i>103</i>&nbsp;            throw new NotExistAccountAtChatRoomException(account, this.getChatRoom());</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;        //account가 이미 받았는지
+<b class="fc"><i>106</i>&nbsp;        if (this.getMoneyPieces().stream()</b>
+<b class="fc"><i>107</i>&nbsp;                .anyMatch(moneyPiece -&gt;</b>
+<b class="fc"><i>108</i>&nbsp;                        moneyPiece.getPicker() != null</b>
+<b class="fc"><i>109</i>&nbsp;                                &amp;&amp; moneyPiece.getPicker().equals(account)</b>
+<i>110</i>&nbsp;                ))
+<b class="fc"><i>111</i>&nbsp;            throw new AccountAlreadyPickedException();</b>
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;        //남은 piece 없음
+<b class="fc"><i>114</i>&nbsp;        if (this.getMoneyPieces().stream()</b>
+<b class="fc"><i>115</i>&nbsp;                .filter(moneyPiece -&gt; !moneyPiece.isHasPicked())</b>
+<b class="fc"><i>116</i>&nbsp;                .count() &lt;= 0)</b>
+<b class="fc"><i>117</i>&nbsp;            throw new UnusedPieceNoneExistException();</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;        //뿌린 사람이랑 account랑 같은지
+<b class="fc"><i>120</i>&nbsp;        if (this.getDistributor().equals(account))</b>
+<b class="fc"><i>121</i>&nbsp;            throw new DistributorCanNotPickException();</b>
+<b class="fc"><i>122</i>&nbsp;    }</b>
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    public Integer getPickedMoneySum() {
+<b class="fc"><i>125</i>&nbsp;        return this.getMoneyPieces().stream()</b>
+<b class="fc"><i>126</i>&nbsp;                .filter(moneyPiece -&gt; moneyPiece.isHasPicked())</b>
+<b class="fc"><i>127</i>&nbsp;                .mapToInt(MoneyPiece::getMoneyValue)</b>
+<b class="fc"><i>128</i>&nbsp;                .sum()</b>
+<i>129</i>&nbsp;                ;
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    public List&lt;MoneyPiece&gt; getUsedPieces() {
+<b class="fc"><i>133</i>&nbsp;        return this.getMoneyPieces().stream()</b>
+<b class="fc"><i>134</i>&nbsp;                .filter(moneyPiece -&gt; moneyPiece.isHasPicked())</b>
+<b class="fc"><i>135</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>136</i>&nbsp;    }
+<i>137</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-27 01:09</div>
+</div>
+</body>
+</html>

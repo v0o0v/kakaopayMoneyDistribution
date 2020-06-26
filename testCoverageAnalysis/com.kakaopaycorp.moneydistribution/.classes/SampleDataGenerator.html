@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SampleDataGenerator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.kakaopaycorp.moneydistribution</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SampleDataGenerator (com.kakaopaycorp.moneydistribution)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SampleDataGenerator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.kakaopaycorp.moneydistribution;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.Account;
+<i>4</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
+<i>5</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
+<i>6</i>&nbsp;import com.kakaopaycorp.moneydistribution.service.AccountService;
+<i>7</i>&nbsp;import com.kakaopaycorp.moneydistribution.service.ChatRoomService;
+<i>8</i>&nbsp;import com.kakaopaycorp.moneydistribution.service.MoneyDistributionService;
+<i>9</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>10</i>&nbsp;import org.springframework.boot.ApplicationArguments;
+<i>11</i>&nbsp;import org.springframework.boot.ApplicationRunner;
+<i>12</i>&nbsp;import org.springframework.context.annotation.Profile;
+<i>13</i>&nbsp;import org.springframework.stereotype.Component;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import java.util.Arrays;
+<i>16</i>&nbsp;import java.util.HashSet;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;@Profile({&quot;!test&quot;})
+<i>19</i>&nbsp;@Component
+<b class="nc"><i>20</i>&nbsp;public class SampleDataGenerator implements ApplicationRunner {</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @Autowired
+<i>23</i>&nbsp;    AccountService accountService;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Autowired
+<i>26</i>&nbsp;    ChatRoomService chatRoomService;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Autowired
+<i>29</i>&nbsp;    MoneyDistributionService moneyDistributionService;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @Override
+<i>32</i>&nbsp;    public void run(ApplicationArguments args) throws Exception {
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;        Account account1 = this.accountService.addAccount();</b>
+<b class="nc"><i>35</i>&nbsp;        Account account2 = this.accountService.addAccount();</b>
+<b class="nc"><i>36</i>&nbsp;        Account account3 = this.accountService.addAccount();</b>
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;        ChatRoom chatRoom = this.chatRoomService.makeChatRoom(new HashSet&lt;&gt;(Arrays.asList(account1, account2, account3)));</b>
+<i>39</i>&nbsp;
+<b class="nc"><i>40</i>&nbsp;        MoneyDistribution moneyDistribution = this.moneyDistributionService.addMoneyDistribution(account1.getId(), chatRoom.getId(), 10000, 3);</b>
+<b class="nc"><i>41</i>&nbsp;    }</b>
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-27 01:09</div>
+</div>
+</body>
+</html>

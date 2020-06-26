@@ -1,0 +1,229 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MoneyDistributionService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.kakaopaycorp.moneydistribution.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MoneyDistributionService (com.kakaopaycorp.moneydistribution.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MoneyDistributionService</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (36/ 42)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MoneyDistributionService$$EnhancerBySpringCGLIB$$1dd2774d</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$$EnhancerBySpringCGLIB$$1dd2774d$$FastClassBySpringCGLIB$$f36118e4</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$$FastClassBySpringCGLIB$$365eb706</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$2g7ogaen</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$brPEDpcx</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$fIrei3kJ</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$lUTmvUeo</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$mEpI96XS</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$rPtBm3gF</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionService$MockitoMock$2106600525$auxiliary$VKEiSjf7</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (36/ 42)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.kakaopaycorp.moneydistribution.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.Account;
+<i>4</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.ChatRoom;
+<i>5</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
+<i>6</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
+<i>7</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.exception.*;
+<i>8</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
+<i>9</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>10</i>&nbsp;import net.bytebuddy.utility.RandomString;
+<i>11</i>&nbsp;import org.springframework.stereotype.Service;
+<i>12</i>&nbsp;import org.springframework.transaction.annotation.Transactional;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import java.time.LocalDateTime;
+<i>15</i>&nbsp;
+<b class="fc"><i>16</i>&nbsp;@Slf4j</b>
+<i>17</i>&nbsp;@Service
+<i>18</i>&nbsp;public class MoneyDistributionService {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    private ChatRoomService chatRoomService;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    private AccountService accountService;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    private MoneyDistributionRepository moneyDistributionRepository;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public MoneyDistributionService(
+<i>27</i>&nbsp;            final ChatRoomService chatRoomService
+<i>28</i>&nbsp;            , final AccountService accountService
+<b class="fc"><i>29</i>&nbsp;            , final MoneyDistributionRepository moneyDistributionRepository) {</b>
+<b class="fc"><i>30</i>&nbsp;        this.chatRoomService = chatRoomService;</b>
+<b class="fc"><i>31</i>&nbsp;        this.accountService = accountService;</b>
+<b class="fc"><i>32</i>&nbsp;        this.moneyDistributionRepository = moneyDistributionRepository;</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    @Transactional
+<i>36</i>&nbsp;    public MoneyDistribution addMoneyDistribution(long accountID, String chatRoomID, int money, int pieceNum) {
+<b class="fc"><i>37</i>&nbsp;        ChatRoom chatRoom = this.chatRoomService.getChatRoom(chatRoomID);</b>
+<b class="fc"><i>38</i>&nbsp;        Account distributor = this.accountService.getAccount(accountID);</b>
+<i>39</i>&nbsp;
+<b class="fc"><i>40</i>&nbsp;        if (!chatRoom.containsAccount(distributor))</b>
+<b class="fc"><i>41</i>&nbsp;            throw new NotExistAccountAtChatRoomException(distributor, chatRoom);</b>
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;        if (money &lt; 0)</b>
+<b class="fc"><i>44</i>&nbsp;            throw new MoneyCanNotBeMinusException();</b>
+<i>45</i>&nbsp;
+<b class="fc"><i>46</i>&nbsp;        if (pieceNum &lt; 1)</b>
+<b class="fc"><i>47</i>&nbsp;            throw new PieceNumCanNotLessThanOneException();</b>
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;        return this.moneyDistributionRepository.save(</b>
+<i>50</i>&nbsp;                new MoneyDistribution(
+<b class="fc"><i>51</i>&nbsp;                        chatRoom, distributor, money, pieceNum, makeToken(RandomString.make(3), chatRoom)));</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    @Transactional
+<i>55</i>&nbsp;    public String makeToken(String token, ChatRoom chatRoom) {
+<b class="fc"><i>56</i>&nbsp;        if (this.isExistTokenInAWeek(token, chatRoom))</b>
+<b class="fc"><i>57</i>&nbsp;            return makeToken(RandomString.make(3), chatRoom);</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        return token;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    @Transactional(readOnly = true)
+<i>63</i>&nbsp;    public boolean isExistTokenInAWeek(String token, ChatRoom chatRoom) {
+<b class="fc"><i>64</i>&nbsp;        return this.moneyDistributionRepository</b>
+<b class="fc"><i>65</i>&nbsp;                .findAllByCreatedAtAfterAndChatRoomIs(LocalDateTime.now().minusDays(7), chatRoom)</b>
+<b class="fc"><i>66</i>&nbsp;                .stream()</b>
+<b class="fc"><i>67</i>&nbsp;                .filter(moneyDistribution -&gt; moneyDistribution.getToken().equals(token))</b>
+<b class="fc"><i>68</i>&nbsp;                .count() &gt;= 1;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    @Transactional
+<i>72</i>&nbsp;    public MoneyPiece pickMoneyPiece(Long accountID, String chatRoomID, String token) {
+<b class="nc"><i>73</i>&nbsp;        ChatRoom chatRoom = this.chatRoomService.getChatRoom(chatRoomID);</b>
+<b class="nc"><i>74</i>&nbsp;        Account account = this.accountService.getAccount(accountID);</b>
+<i>75</i>&nbsp;
+<b class="nc"><i>76</i>&nbsp;        if (!chatRoom.containsAccount(account))</b>
+<b class="nc"><i>77</i>&nbsp;            throw new NotExistAccountAtChatRoomException(account, chatRoom);</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;        MoneyDistribution md = this.getMoneyDistribution(token, chatRoom);</b>
+<b class="nc"><i>80</i>&nbsp;        return md.pickPiece(account);</b>
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    private MoneyDistribution getMoneyDistribution(String token, ChatRoom chatRoom) {
+<b class="fc"><i>84</i>&nbsp;        return this.moneyDistributionRepository</b>
+<b class="fc"><i>85</i>&nbsp;                .findAllByCreatedAtAfterAndChatRoomIs(LocalDateTime.now().minusDays(7), chatRoom)</b>
+<b class="fc"><i>86</i>&nbsp;                .stream()</b>
+<b class="fc"><i>87</i>&nbsp;                .filter(moneyDistribution -&gt; moneyDistribution.getToken().equals(token))</b>
+<b class="fc"><i>88</i>&nbsp;                .findFirst()</b>
+<b class="fc"><i>89</i>&nbsp;                .orElseThrow(NotValidTokenException::new);</b>
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    @Transactional(readOnly = true)
+<i>93</i>&nbsp;    public MoneyDistribution searchMoneyDistribution(Long accountID, String chatRoomID, String token) {
+<b class="fc"><i>94</i>&nbsp;        ChatRoom chatRoom = this.chatRoomService.getChatRoom(chatRoomID);</b>
+<b class="fc"><i>95</i>&nbsp;        Account account = this.accountService.getAccount(accountID);</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;        //md가 없다면 NotValidToken exception 발생
+<b class="fc"><i>98</i>&nbsp;        MoneyDistribution md = this.getMoneyDistribution(token, chatRoom);</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;        //md의 distributor가 account가 아닐때 에러
+<b class="fc"><i>101</i>&nbsp;        if(!md.getDistributor().equals(account))</b>
+<b class="fc"><i>102</i>&nbsp;            throw new MoneyDistributeAccessValidationException();</b>
+<i>103</i>&nbsp;
+<b class="fc"><i>104</i>&nbsp;        return md;</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-27 01:09</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MoneyDistributionControllerDTO</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.kakaopaycorp.moneydistribution.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MoneyDistributionControllerDTO (com.kakaopaycorp.moneydistribution.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MoneyDistributionControllerDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MoneyDistributionControllerDTO$CreateRequestDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionControllerDTO$CreateResponseDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (4/ 6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionControllerDTO$MoneyPieceDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (3/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/ 8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionControllerDTO$PickRequestDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionControllerDTO$PickResponseDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (4/ 6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MoneyDistributionControllerDTO$SearchResponseDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    71.4%
+  </span>
+  <span class="absValue">
+    (5/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.7%
+  </span>
+  <span class="absValue">
+    (13/ 15)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    70%
+  </span>
+  <span class="absValue">
+    (21/ 30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82%
+  </span>
+  <span class="absValue">
+    (41/ 50)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.kakaopaycorp.moneydistribution.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
+<i>4</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
+<i>5</i>&nbsp;import lombok.Getter;
+<i>6</i>&nbsp;import lombok.NoArgsConstructor;
+<i>7</i>&nbsp;import lombok.Setter;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import javax.validation.constraints.Min;
+<i>10</i>&nbsp;import javax.validation.constraints.NotEmpty;
+<i>11</i>&nbsp;import java.time.LocalDateTime;
+<i>12</i>&nbsp;import java.util.List;
+<i>13</i>&nbsp;import java.util.stream.Collectors;
+<i>14</i>&nbsp;
+<b class="nc"><i>15</i>&nbsp;public class MoneyDistributionControllerDTO {</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @Getter
+<b class="fc"><i>18</i>&nbsp;    @Setter</b>
+<b class="fc"><i>19</i>&nbsp;    @NoArgsConstructor</b>
+<i>20</i>&nbsp;    public static class CreateRequestDTO {
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;        @Min(value = 0, message = &quot;뿌리기 지정 액수는 0보디 작을 수 없습니다.&quot;)
+<b class="fc"><i>23</i>&nbsp;        private Integer money;</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;        @Min(value = 1, message = &quot;뿌리기 지정 대상 인원은 1보다 작을 수 없습니다.&quot;)
+<b class="fc"><i>26</i>&nbsp;        private Integer pieceNum;</b>
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;        public CreateRequestDTO(Integer money, Integer pieceNum) {</b>
+<b class="fc"><i>29</i>&nbsp;            this.money = money;</b>
+<b class="fc"><i>30</i>&nbsp;            this.pieceNum = pieceNum;</b>
+<b class="fc"><i>31</i>&nbsp;        }</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    @Getter
+<b class="nc"><i>35</i>&nbsp;    @Setter</b>
+<b class="nc"><i>36</i>&nbsp;    @NoArgsConstructor</b>
+<i>37</i>&nbsp;    public static class CreateResponseDTO {
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        private String token;</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;        public CreateResponseDTO(String token) {</b>
+<b class="fc"><i>42</i>&nbsp;            this.token = token;</b>
+<b class="fc"><i>43</i>&nbsp;        }</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Getter
+<b class="fc"><i>47</i>&nbsp;    @Setter</b>
+<b class="fc"><i>48</i>&nbsp;    @NoArgsConstructor</b>
+<i>49</i>&nbsp;    public static class PickRequestDTO {
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;        @NotEmpty(message = &quot;Token 값이 비어있습니다.&quot;)
+<b class="fc"><i>52</i>&nbsp;        private String token;</b>
+<i>53</i>&nbsp;
+<b class="fc"><i>54</i>&nbsp;        public PickRequestDTO(String token) {</b>
+<b class="fc"><i>55</i>&nbsp;            this.token = token;</b>
+<b class="fc"><i>56</i>&nbsp;        }</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Getter
+<b class="nc"><i>60</i>&nbsp;    @Setter</b>
+<b class="nc"><i>61</i>&nbsp;    @NoArgsConstructor</b>
+<i>62</i>&nbsp;    public static class PickResponseDTO {
+<i>63</i>&nbsp;
+<b class="fc"><i>64</i>&nbsp;        private Integer pickedMoneyValue;</b>
+<i>65</i>&nbsp;
+<b class="fc"><i>66</i>&nbsp;        public PickResponseDTO(Integer pickedMoneyValue) {</b>
+<b class="fc"><i>67</i>&nbsp;            this.pickedMoneyValue = pickedMoneyValue;</b>
+<b class="fc"><i>68</i>&nbsp;        }</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    @Getter
+<b class="nc"><i>72</i>&nbsp;    @Setter</b>
+<b class="nc"><i>73</i>&nbsp;    @NoArgsConstructor</b>
+<i>74</i>&nbsp;    public static class SearchResponseDTO {
+<i>75</i>&nbsp;
+<b class="fc"><i>76</i>&nbsp;        private LocalDateTime distributedAt;</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        private Integer distributedTotalMoneyValue;</b>
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        private Integer pickedMoneyValue;</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;        private List&lt;MoneyPieceDTO&gt; pickedMoneyPieces;</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        public SearchResponseDTO(MoneyDistribution md) {</b>
+<b class="fc"><i>85</i>&nbsp;            this.distributedAt = md.getCreatedAt();</b>
+<b class="fc"><i>86</i>&nbsp;            this.distributedTotalMoneyValue = md.getTotalDistributedMoneyValue();</b>
+<b class="fc"><i>87</i>&nbsp;            this.pickedMoneyValue = md.getPickedMoneySum();</b>
+<b class="fc"><i>88</i>&nbsp;            this.pickedMoneyPieces = md.getUsedPieces()</b>
+<b class="fc"><i>89</i>&nbsp;                    .stream()</b>
+<b class="fc"><i>90</i>&nbsp;                    .map(MoneyPieceDTO::new)</b>
+<b class="fc"><i>91</i>&nbsp;                    .collect(Collectors.toList());</b>
+<b class="fc"><i>92</i>&nbsp;        }</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    @Getter
+<b class="nc"><i>96</i>&nbsp;    @Setter</b>
+<b class="nc"><i>97</i>&nbsp;    @NoArgsConstructor</b>
+<i>98</i>&nbsp;    public static class MoneyPieceDTO {
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;        private Integer pickedMoneyValue;</b>
+<i>101</i>&nbsp;
+<b class="fc"><i>102</i>&nbsp;        private Long pickerID;</b>
+<i>103</i>&nbsp;
+<b class="fc"><i>104</i>&nbsp;        public MoneyPieceDTO(MoneyPiece mp) {</b>
+<b class="fc"><i>105</i>&nbsp;            this.pickedMoneyValue = mp.getMoneyValue();</b>
+<b class="fc"><i>106</i>&nbsp;            this.pickerID = mp.getPicker().getId();</b>
+<b class="fc"><i>107</i>&nbsp;        }</b>
+<i>108</i>&nbsp;    }
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-27 01:09</div>
+</div>
+</body>
+</html>

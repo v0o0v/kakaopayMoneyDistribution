@@ -1,0 +1,158 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MoneyDistributionController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.kakaopaycorp.moneydistribution.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MoneyDistributionController (com.kakaopaycorp.moneydistribution.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MoneyDistributionController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.kakaopaycorp.moneydistribution.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
+<i>4</i>&nbsp;import com.kakaopaycorp.moneydistribution.domain.MoneyPiece;
+<i>5</i>&nbsp;import com.kakaopaycorp.moneydistribution.service.MoneyDistributionService;
+<i>6</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>7</i>&nbsp;import org.springframework.http.MediaType;
+<i>8</i>&nbsp;import org.springframework.http.ResponseEntity;
+<i>9</i>&nbsp;import org.springframework.stereotype.Controller;
+<i>10</i>&nbsp;import org.springframework.web.bind.annotation.*;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import javax.validation.Valid;
+<i>13</i>&nbsp;
+<b class="fc"><i>14</i>&nbsp;@Slf4j</b>
+<i>15</i>&nbsp;@Controller
+<i>16</i>&nbsp;@RequestMapping(&quot;/moneyDistribution&quot;)
+<i>17</i>&nbsp;public class MoneyDistributionController {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private MoneyDistributionService moneyDistributionService;
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;    public MoneyDistributionController(final MoneyDistributionService moneyDistributionService) {</b>
+<b class="fc"><i>22</i>&nbsp;        this.moneyDistributionService = moneyDistributionService;</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @PostMapping
+<i>26</i>&nbsp;    public ResponseEntity&lt;?&gt; createMoneyDistribution(
+<i>27</i>&nbsp;            @RequestHeader(&quot;X-USER-ID&quot;) Long accoountId
+<i>28</i>&nbsp;            , @RequestHeader(&quot;X-ROOM-ID&quot;) String chatRoomId
+<i>29</i>&nbsp;            , @RequestBody @Valid MoneyDistributionControllerDTO.CreateRequestDTO dto
+<i>30</i>&nbsp;    ) {
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;        MoneyDistribution moneyDistribution = this.moneyDistributionService</b>
+<b class="fc"><i>33</i>&nbsp;                .addMoneyDistribution(accoountId, chatRoomId, dto.getMoney(), dto.getPieceNum());</b>
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;        return ResponseEntity</b>
+<b class="fc"><i>36</i>&nbsp;                .ok()</b>
+<b class="fc"><i>37</i>&nbsp;                .contentType(MediaType.APPLICATION_JSON)</b>
+<b class="fc"><i>38</i>&nbsp;                .body(new MoneyDistributionControllerDTO.CreateResponseDTO(moneyDistribution.getToken()));</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    @PutMapping(&quot;/pick&quot;)
+<i>43</i>&nbsp;    public ResponseEntity&lt;?&gt; pickMoneyDistribution(
+<i>44</i>&nbsp;            @RequestHeader(&quot;X-USER-ID&quot;) Long accountID
+<i>45</i>&nbsp;            , @RequestHeader(&quot;X-ROOM-ID&quot;) String chatRoomID
+<i>46</i>&nbsp;            , @RequestBody @Valid MoneyDistributionControllerDTO.PickRequestDTO dto
+<i>47</i>&nbsp;    ) {
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;        MoneyPiece moneyPiece = this.moneyDistributionService</b>
+<b class="fc"><i>50</i>&nbsp;                .pickMoneyPiece(accountID, chatRoomID, dto.getToken());</b>
+<i>51</i>&nbsp;
+<b class="fc"><i>52</i>&nbsp;        return ResponseEntity</b>
+<b class="fc"><i>53</i>&nbsp;                .ok()</b>
+<b class="fc"><i>54</i>&nbsp;                .contentType(MediaType.APPLICATION_JSON)</b>
+<b class="fc"><i>55</i>&nbsp;                .body(new MoneyDistributionControllerDTO.PickResponseDTO(moneyPiece.getMoneyValue()));</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @GetMapping(&quot;/{token}&quot;)
+<i>60</i>&nbsp;    public ResponseEntity&lt;?&gt; searchMoneyDistribution(
+<i>61</i>&nbsp;            @RequestHeader(&quot;X-USER-ID&quot;) Long accountID
+<i>62</i>&nbsp;            , @RequestHeader(&quot;X-ROOM-ID&quot;) String chatRoomID
+<i>63</i>&nbsp;            , @PathVariable String token
+<i>64</i>&nbsp;    ) {
+<i>65</i>&nbsp;
+<b class="fc"><i>66</i>&nbsp;        MoneyDistribution md = this.moneyDistributionService</b>
+<b class="fc"><i>67</i>&nbsp;                .searchMoneyDistribution(accountID, chatRoomID, token);</b>
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;        return ResponseEntity</b>
+<b class="fc"><i>70</i>&nbsp;                .ok()</b>
+<b class="fc"><i>71</i>&nbsp;                .contentType(MediaType.APPLICATION_JSON)</b>
+<b class="fc"><i>72</i>&nbsp;                .body(new MoneyDistributionControllerDTO.SearchResponseDTO(md));</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    }
+<i>75</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-27 01:09</div>
+</div>
+</body>
+</html>
