@@ -32,15 +32,7 @@ public class MoneyDistributionController {
             @RequestHeader("X-USER-ID") Long accoountId
             , @RequestHeader("X-ROOM-ID") String chatRoomId
             , @RequestBody @Valid MoneyDistributionControllerDTO.CreateRequestDTO dto
-            , BindingResult bindingResult
     ) {
-        if (bindingResult.hasErrors()) {
-            String errorMessage = bindingResult.getAllErrors().get(ZERO).getDefaultMessage();
-            return ResponseEntity
-                    .badRequest()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(new MoneyDistributionControllerDTO.ErrorResponseDTO(errorMessage));
-        }
 
         MoneyDistribution moneyDistribution = this.moneyDistributionService
                 .addMoneyDistribution(accoountId, chatRoomId, dto.getMoney(), dto.getPieceNum());

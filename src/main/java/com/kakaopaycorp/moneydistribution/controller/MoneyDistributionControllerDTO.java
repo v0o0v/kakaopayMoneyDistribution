@@ -11,18 +11,6 @@ public class MoneyDistributionControllerDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class ErrorResponseDTO {
-
-        private String errorMessage;
-
-        public ErrorResponseDTO(String msg) {
-            this.errorMessage = msg;
-        }
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
     public static class CreateRequestDTO {
 
         @Min(value = 0, message = "뿌리기 지정 액수는 0보디 작을 수 없습니다.")
