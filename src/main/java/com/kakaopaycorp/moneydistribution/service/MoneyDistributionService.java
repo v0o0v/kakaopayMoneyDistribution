@@ -6,7 +6,7 @@ import com.kakaopaycorp.moneydistribution.domain.MoneyDistribution;
 import com.kakaopaycorp.moneydistribution.domain.repository.MoneyDistributionRepository;
 import com.kakaopaycorp.moneydistribution.service.exception.MoneyCanNotBeMinusException;
 import com.kakaopaycorp.moneydistribution.service.exception.NotExistAccountAtChatRoomException;
-import com.kakaopaycorp.moneydistribution.service.exception.PieceNumCanNotBeMinusException;
+import com.kakaopaycorp.moneydistribution.service.exception.PieceNumCanNotLessThanOneException;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
@@ -33,18 +33,17 @@ public class MoneyDistributionService {
 
     @Transactional
     public MoneyDistribution addMoneyDistribution(long accountID, String chatRoomID, int money, int pieceNum) {
-        //TODO chatRoom에 account 있는지 확인
         ChatRoom chatRoom = this.chatRoomService.getChatRoom(chatRoomID);
         Account distributor = this.accountService.getAccount(accountID);
 
         if (!chatRoom.containsAccount(distributor))
             throw new NotExistAccountAtChatRoomException(distributor, chatRoom);
 
-        if (money <= 0)
+        if (money < 0)
             throw new MoneyCanNotBeMinusException();
 
-        if (pieceNum <= 0)
-            throw new PieceNumCanNotBeMinusException();
+        if (pieceNum < 1)
+            throw new PieceNumCanNotLessThanOneException();
 
         return this.moneyDistributionRepository.save(
                 new MoneyDistribution(chatRoom, distributor, money, pieceNum, makeToken()));
