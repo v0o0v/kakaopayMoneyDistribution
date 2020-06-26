@@ -3,6 +3,6 @@ package com.kakaopaycorp.moneydistribution.domain.exception;
 public class ValidTimeOverException extends RuntimeException {
 
     public ValidTimeOverException() {
-        super("Token이 유효하지 않습니다.");
+        super("뿌리기 유효시간이 지났습니다.");
     }
 }
