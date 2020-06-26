@@ -22,7 +22,7 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "chatters")
     private Set<ChatRoom> chatRoom;
 
     public Account() {

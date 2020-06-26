@@ -20,7 +20,7 @@ public class ChatRoom {
     @Id
     private String id;
 
-    @ManyToMany(mappedBy = "chatRoom")
+    @ManyToMany
     private Set<Account> chatters;
 
     @Override
