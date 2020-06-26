@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -34,12 +35,15 @@ public class MoneyDistribution {
     @JsonManagedReference
     private List<MoneyPiece> moneyPieces;
 
+    private LocalDateTime createdAt;
+
 
     public MoneyDistribution(ChatRoom chatRoom, Account account, int money, int pieceNum, String token) {
         this.chatRoom = chatRoom;
         this.distributor = account;
         this.moneyPieces = this.makeMoneyPiece(money, pieceNum);
         this.token = token;
+        this.createdAt = LocalDateTime.now();
     }
 
     private List<MoneyPiece> makeMoneyPiece(int totalMoney, int pieceNum) {
