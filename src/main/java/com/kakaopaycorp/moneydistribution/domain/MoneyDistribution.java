@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -41,6 +42,8 @@ public class MoneyDistribution {
 
     private LocalDateTime createdAt;
 
+    private Integer totalDistributedMoneyValue;
+
 
     public MoneyDistribution(ChatRoom chatRoom, Account account, int money, int pieceNum, String token) {
         this.chatRoom = chatRoom;
@@ -48,6 +51,7 @@ public class MoneyDistribution {
         this.moneyPieces = this.makeMoneyPiece(money, pieceNum);
         this.token = token;
         this.createdAt = LocalDateTime.now();
+        this.totalDistributedMoneyValue = money;
     }
 
     private List<MoneyPiece> makeMoneyPiece(int totalMoney, int pieceNum) {
@@ -74,7 +78,7 @@ public class MoneyDistribution {
         return moneyList;
     }
 
-    public MoneyPiece pickUnusedPiece(Account account) {
+    public MoneyPiece pickPiece(Account account) {
 
         validateToPick(account);
 
@@ -101,8 +105,8 @@ public class MoneyDistribution {
         //account가 이미 받았는지
         if (this.getMoneyPieces().stream()
                 .anyMatch(moneyPiece ->
-                    moneyPiece.getPicker() != null
-                    && moneyPiece.getPicker().equals(account)
+                        moneyPiece.getPicker() != null
+                                && moneyPiece.getPicker().equals(account)
                 ))
             throw new AccountAlreadyPickedException();
 
@@ -117,5 +121,17 @@ public class MoneyDistribution {
             throw new DistributorCanNotPickException();
     }
 
+    public Integer getPickedMoneySum() {
+        return this.getMoneyPieces().stream()
+                .filter(moneyPiece -> moneyPiece.isHasPicked())
+                .mapToInt(MoneyPiece::getMoneyValue)
+                .sum()
+                ;
+    }
 
+    public List<MoneyPiece> getUsedPieces() {
+        return this.getMoneyPieces().stream()
+                .filter(moneyPiece -> moneyPiece.isHasPicked())
+                .collect(Collectors.toList());
+    }
 }
