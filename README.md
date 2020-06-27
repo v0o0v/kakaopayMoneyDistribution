@@ -34,7 +34,7 @@ HTTP Header로 전달됩니다.
 
 ## Entity 관계 설정
 
-- [Entity 관계](er.png) 
+- ![텍스트](er.png)
     
 ## API 설계
 
@@ -47,8 +47,10 @@ HTTP Header로 전달됩니다.
 
 - 테스트 결과
     - [테스트 커버리지 결과](https://github.com/v0o0v/kakaopayMoneyDistribution/blob/master/testCoverageAnalysis/index.html)
+    - ![텍스트](testCoverageAnalysis/index.html)
 - Dependency Matrix
-    - [DSM](dsm.PNG)
+    
+    - ![텍스트](dsm.png)
     
 ## 사용 기술
 - Java 8
