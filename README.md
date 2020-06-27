@@ -41,16 +41,20 @@ HTTP Header로 전달됩니다.
 - 요구 사항에 따라 뿌리기/받기/조회 3가지로 구성된다
 - 상세 API
     - [API 문서](https://github.com/v0o0v/kakaopayMoneyDistribution/blob/master/api-guide.html)
+    - ![텍스트](api1.PNG)
+    - ![텍스트](api2.PNG)
+    - ![텍스트](api3.PNG)
    
 
 ## 테스트
 
 - 테스트 결과
     - [테스트 커버리지 결과](https://github.com/v0o0v/kakaopayMoneyDistribution/blob/master/testCoverageAnalysis/index.html)
-    - ![텍스트](testCoverageAnalysis/index.html)
+    - ![텍스트](testCoverage.PNG)
+    
 - Dependency Matrix
     
-    - ![텍스트](dsm.png)
+    - ![텍스트](dsm.PNG)
     
 ## 사용 기술
 - Java 8
