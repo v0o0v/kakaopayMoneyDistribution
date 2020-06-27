@@ -54,10 +54,10 @@ HTTP Header로 전달됩니다.
     - [테스트 커버리지 결과](https://github.com/v0o0v/kakaopayMoneyDistribution/blob/master/testCoverageAnalysis/index.html)
     - ![텍스트](testCoverage.PNG)
     
-- Dependency Matrix
+- Dependency Structure Matrix
     
     - ![텍스트](dsm.PNG)
-    
+        - DSM 결과 순환참조가 발생하지 않았으며 레이어 아키텍처가 적절하게 적용되었음
 ## 사용 기술
 - Java 8
 - Spring boot 2.3.1
