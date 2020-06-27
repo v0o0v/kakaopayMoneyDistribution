@@ -37,7 +37,7 @@ HTTP Header로 전달됩니다.
 - 비지니스 예외는 RuntimeException으로 처리하며 글로벌하게 처리하는 클래스에서 담당한다.
 - API 요청 시 발생하는 예외에 따라 400 Http 코드를 반환하며 적절한 메세지를 돌려주어 사용자가 예외에 대한 내용을 자세히 알 수 있도록 한다.
     - 예제
-    - ![텍스트](res_error_ex.png)
+    - ![텍스트](res_error_ex.PNG)
      
 
 ## Entity 관계 설정
